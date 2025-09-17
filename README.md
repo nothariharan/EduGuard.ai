@@ -12,7 +12,7 @@ EduGuard.ai is a comprehensive educational management platform designed to ident
 - Interactive charts and visualizations
 - Key performance indicators (KPIs) monitoring
 
-### �� **Student Management**
+### 👥 **Student Management**
 - Comprehensive student profiles with detailed information
 - Academic performance tracking (attendance, grades, assignments)
 - Fee status monitoring and payment tracking
@@ -86,3 +86,75 @@ EduGuard.ai is a comprehensive educational management platform designed to ident
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
+
+```
+eduguardai/
+├── app/                    # Next.js app directory
+│   ├── alerts/            # Alert management pages
+│   ├── notifications/     # Notification center
+│   ├── reports/          # Analytics and reports
+│   ├── students/         # Student management
+│   └── globals.css       # Global styles
+├── components/           # Reusable UI components
+│   ├── ui/              # Base UI components
+│   ├── dashboard-*.tsx  # Dashboard-specific components
+│   └── ...
+├── lib/                 # Utility functions
+├── backend/             # Backend services
+└── ...
+```
+
+## 🎯 Key Components
+
+- **Dashboard**: Main overview with KPIs and charts
+- **Student Profiles**: Detailed student information and analytics
+- **Alert Management**: Risk detection and notification system
+- **Reports**: Comprehensive analytics and insights
+- **Notification Center**: Centralized communication hub
+
+## 🔧 Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```env
+# Database
+DATABASE_URL="your_database_url"
+
+# Next.js
+NEXTAUTH_SECRET="your_secret"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Add other environment variables as needed
+```
+
+## 📝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Support
+
+For support, email support@eduguard.ai or join our community discussions.
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Radix UI for accessible components
+- Tailwind CSS for utility-first styling
+- All contributors who help make EduGuard.ai better
