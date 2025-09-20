@@ -18,16 +18,22 @@ DB_NAME = os.getenv('DB_NAME', 'eduguardai')
 # Database connection function
 def get_db_connection():
     try:
+        print(f"Attempting to connect to: {DB_HOST}, user: {DB_USER}, database: {DB_NAME}")
         connection = mysql.connect(
             host=DB_HOST, 
             user=DB_USER, 
             password=DB_PASSWORD, 
             database=DB_NAME,
-            autocommit=True
+            autocommit=True,
+            connect_timeout=10
         )
+        print("Database connection successful!")
         return connection
     except mysql.Error as e:
         print(f"Database connection error: {e}")
+        return None
+    except Exception as e:
+        print(f"General connection error: {e}")
         return None
 
 # Initialize connection
@@ -36,6 +42,21 @@ mycon = get_db_connection()
 @app.route("/", methods =["GET"])
 def health_check():
     return jsonify({"status": "Backend is working!", "message": "EduGuard.ai API is running"}), 200
+
+@app.route("/test-db", methods =["GET"])
+def test_database():
+    try:
+        connection = get_db_connection()
+        if not connection:
+            return jsonify({"error": "Database connection failed", "details": "Could not connect to database"}), 500
+        
+        with connection.cursor(dictionary = True) as cursor:
+            cursor.execute("SELECT COUNT(*) as count FROM students")
+            result = cursor.fetchone()
+        
+        return jsonify({"status": "Database connected!", "student_count": result['count']}), 200
+    except Exception as e:
+        return jsonify({"error": "Database test failed", "details": str(e)}), 500
 
 @app.route("/students", methods =["GET"])
 def get_students():
