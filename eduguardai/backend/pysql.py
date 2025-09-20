@@ -33,9 +33,14 @@ def get_db_connection():
 # Initialize connection
 mycon = get_db_connection()
 
+@app.route("/", methods =["GET"])
+def health_check():
+    return jsonify({"status": "Backend is working!", "message": "EduGuard.ai API is running"}), 200
+
 @app.route("/students", methods =["GET"])
 def get_students():
     try:
+      print(f"Connecting to database: {DB_HOST}, {DB_USER}, {DB_NAME}")
       connection = get_db_connection()
       if not connection:
         return jsonify({"error": "Database connection failed"}), 500
@@ -43,8 +48,13 @@ def get_students():
       with connection.cursor(dictionary = True) as cursor:
         cursor.execute("SELECT id, name_rollno, parent_mentor FROM students")
         students = cursor.fetchall()
+        print(f"Found {len(students)} students")
       return jsonify({"students": students}), 200
     except mysql.Error as e:
+      print(f"Database error: {e}")
+      return jsonify({"error": str(e)}), 500
+    except Exception as e:
+      print(f"General error: {e}")
       return jsonify({"error": str(e)}), 500
 
 @app.route("/send_notification", methods =["POST"])
