@@ -37,6 +37,7 @@ export default function NotificationsPage() {
 
   // Load data on component mount
   useEffect(() => {
+    console.log('Component mounted, fetching data...')
     fetchNotifications()
     fetchStudents()
   }, [])
