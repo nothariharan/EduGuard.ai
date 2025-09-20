@@ -22,7 +22,8 @@ export function DashboardHeader() {
   useEffect(() => {
     const fetchNotificationCount = async () => {
       try {
-        const res = await fetch("http://localhost:5000/get_notifications")
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+        const res = await fetch(`${apiUrl}/get_notifications`)
         const data = await res.json()
         setNotificationCount(data?.notifications?.length || 0)
       } catch (err) {
