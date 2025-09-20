@@ -77,7 +77,9 @@ export default function NotificationsPage() {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/get_notifications`)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      console.log('API URL being used:', apiUrl)
+      const res = await fetch(`${apiUrl}/get_notifications`)
       const data = await res.json()
       const list = (data?.notifications ?? []).map((n: any, idx: number) => ({
         id: idx + 1,
@@ -100,7 +102,9 @@ export default function NotificationsPage() {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/students`)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      console.log('API URL for students:', apiUrl)
+      const res = await fetch(`${apiUrl}/students`)
       const data = await res.json()
       setStudents(data?.students ?? [])
     } catch (err) {
@@ -148,7 +152,9 @@ export default function NotificationsPage() {
       }
 
       for (const channel of channels) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/send_notification`, {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+        console.log('API URL for sending notification:', apiUrl)
+        const res = await fetch(`${apiUrl}/send_notification`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...payloadBase, channel }),
