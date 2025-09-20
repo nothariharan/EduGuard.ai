@@ -8,6 +8,18 @@
   ],
   "routes": [
     {
+      "src": "/students",
+      "dest": "/pysql.py"
+    },
+    {
+      "src": "/send_notification",
+      "dest": "/pysql.py"
+    },
+    {
+      "src": "/get_notifications",
+      "dest": "/pysql.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "/pysql.py"
     }

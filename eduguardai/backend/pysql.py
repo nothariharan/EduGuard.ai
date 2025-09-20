@@ -15,14 +15,33 @@ DB_USER = os.getenv('DB_USER', 'root')
 DB_PASSWORD = os.getenv('DB_PASSWORD', '0129')
 DB_NAME = os.getenv('DB_NAME', 'eduguardai')
 
-mycon = mysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
-cursor = mycon.cursor(dictionary=True)
+# Database connection function
+def get_db_connection():
+    try:
+        connection = mysql.connect(
+            host=DB_HOST, 
+            user=DB_USER, 
+            password=DB_PASSWORD, 
+            database=DB_NAME,
+            autocommit=True
+        )
+        return connection
+    except mysql.Error as e:
+        print(f"Database connection error: {e}")
+        return None
+
+# Initialize connection
+mycon = get_db_connection()
 
 @app.route("/students", methods =["GET"])
 def get_students():
     try:
-      with mycon.cursor(dictionary = True) as cursor:
-        cursor.execute("SELECT name_rollno, parent_mentor FROM students")
+      connection = get_db_connection()
+      if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+      
+      with connection.cursor(dictionary = True) as cursor:
+        cursor.execute("SELECT id, name_rollno, parent_mentor FROM students")
         students = cursor.fetchall()
       return jsonify({"students": students}), 200
     except mysql.Error as e:
@@ -52,11 +71,15 @@ def send_notification():
       subject = data.get("subject")
       message = data.get("message")
       channel = data.get("channel")
+      connection = get_db_connection()
+      if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+      
       query = "INSERT INTO notifications (recipent_id, student_id, priority_id, subject, message, channel) VALUES (%s, %s, %s, %s, %s, %s)"
       values = (recipent_id, student_id, priority_id, subject, message, channel)
-      with mycon.cursor(dictionary = True) as cursor:
+      with connection.cursor(dictionary = True) as cursor:
         cursor.execute(query, values)
-        mycon.commit()
+        connection.commit()
       return jsonify({"message": "Notification sent successfully"}), 200
     except KeyError as e:
       return jsonify({"error": f"Missing field {e}"}), 400
@@ -64,10 +87,20 @@ def send_notification():
       return jsonify({"error": str(e)}), 500
 @app.route("/get_notifications", methods =["GET"])
 def get_notifications():
-    with mycon.cursor(dictionary = True) as cursor:
-        cursor.execute("SELECT recipent_id, student_id, priority_id, subject, message, channel FROM notifications")
+    try:
+      connection = get_db_connection()
+      if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+      
+      with connection.cursor(dictionary = True) as cursor:
+        cursor.execute("SELECT recipent_id, student_id, priority_id, subject, message, channel, created_at FROM notifications")
         notifications = cursor.fetchall()
-    return jsonify({"notifications": notifications}), 200
+      return jsonify({"notifications": notifications}), 200
+    except mysql.Error as e:
+      return jsonify({"error": str(e)}), 500
+
+# Vercel requires this for serverless functions
+app = app
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
