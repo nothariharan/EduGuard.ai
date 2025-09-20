@@ -1,12 +1,22 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector as mysql
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["*"])  # Allow all origins for production
 
-mycon = mysql.connect(host = "localhost", user = "root", password = "0129", database = "eduguardai")
-cursor = mycon.cursor(dictionary = True)
+# Database configuration from environment variables
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_USER = os.getenv('DB_USER', 'root')
+DB_PASSWORD = os.getenv('DB_PASSWORD', '0129')
+DB_NAME = os.getenv('DB_NAME', 'eduguardai')
+
+mycon = mysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
+cursor = mycon.cursor(dictionary=True)
 
 @app.route("/students", methods =["GET"])
 def get_students():
@@ -60,5 +70,5 @@ def get_notifications():
     return jsonify({"notifications": notifications}), 200
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
 

@@ -77,7 +77,7 @@ export default function NotificationsPage() {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch("http://localhost:5000/get_notifications")
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/get_notifications`)
       const data = await res.json()
       const list = (data?.notifications ?? []).map((n: any, idx: number) => ({
         id: idx + 1,
@@ -100,7 +100,7 @@ export default function NotificationsPage() {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("http://localhost:5000/students")
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/students`)
       const data = await res.json()
       setStudents(data?.students ?? [])
     } catch (err) {
@@ -148,7 +148,7 @@ export default function NotificationsPage() {
       }
 
       for (const channel of channels) {
-        const res = await fetch("http://localhost:5000/send_notification", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/send_notification`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...payloadBase, channel }),
@@ -260,7 +260,7 @@ export default function NotificationsPage() {
                             <Checkbox 
                               id="email" 
                               checked={sendEmail}
-                              onCheckedChange={setSendEmail}
+                              onCheckedChange={(checked) => setSendEmail(checked === true)}
                             />
                             <label htmlFor="email" className="text-sm">Email</label>
                           </div>
@@ -268,7 +268,7 @@ export default function NotificationsPage() {
                             <Checkbox 
                               id="sms" 
                               checked={sendSms}
-                              onCheckedChange={setSendSms}
+                              onCheckedChange={(checked) => setSendSms(checked === true)}
                             />
                             <label htmlFor="sms" className="text-sm">SMS</label>
                           </div>
@@ -276,7 +276,7 @@ export default function NotificationsPage() {
                             <Checkbox 
                               id="push" 
                               checked={sendPush}
-                              onCheckedChange={setSendPush}
+                              onCheckedChange={(checked) => setSendPush(checked === true)}
                             />
                             <label htmlFor="push" className="text-sm">Push</label>
                           </div>
