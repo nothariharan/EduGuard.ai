@@ -14,6 +14,7 @@ DB_HOST = os.getenv('DB_HOST', 'localhost')
 DB_USER = os.getenv('DB_USER', 'root')
 DB_PASSWORD = os.getenv('DB_PASSWORD', '0129')
 DB_NAME = os.getenv('DB_NAME', 'eduguardai')
+DB_PORT = os.getenv('DB_PORT', '3306')
 
 # Database connection function
 def get_db_connection():
@@ -24,6 +25,7 @@ def get_db_connection():
             user=DB_USER, 
             password=DB_PASSWORD, 
             database=DB_NAME,
+            port=int(DB_PORT),
             autocommit=True,
             connect_timeout=10
         )
