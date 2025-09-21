@@ -83,6 +83,6 @@ EduGuard.ai is a comprehensive educational management platform designed to ident
    ```
 
 5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to https://eduguardai5.vercel.app/
 
 ## 📁 Project Structure
