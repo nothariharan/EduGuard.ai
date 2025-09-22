@@ -82,6 +82,6 @@ EduGuard.ai is a comprehensive educational management platform designed to ident
    ```
 
 5. **Open your browser**
-   Navigate to https://eduguardai5.vercel.app/
+   Navigate to https://eduguardai5.vercel.app/  (fully deployed but notifications part not yet properly scripted will be done later on! :)
 
 ## 📁 Project Structure
