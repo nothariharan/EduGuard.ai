@@ -48,8 +48,7 @@ EduGuard.ai is a comprehensive educational management platform designed to ident
 - **Icons**: Lucide React
 - **Forms**: React Hook Form with Zod validation
 - **Styling**: Tailwind CSS with custom design system
-- **Database**: Ready for PostgreSQL/MySQL/SQLite integration
-- **ORM**: Prisma (ready for setup)
+- **Database**: Used SQL with FLask
 
 ## 🚀 Getting Started
 
